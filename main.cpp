@@ -4,8 +4,8 @@
 
 class Node {
 public:
-    bool validTail;
-    bool validHead;
+    int validTail = -1;
+    int validHead = -1;
 };
 
 void getInput(int &testCases, std::vector<std::unordered_map<int, Node*>> &testCaseNodes) {
@@ -30,45 +30,50 @@ void getInput(int &testCases, std::vector<std::unordered_map<int, Node*>> &testC
             // if one doesnt exists create a node for it and increase bothValid
             
 
-
             //fails only if already has head or tail
+            if (testCaseNodes[i].find(a) != testCaseNodes[i].end() && testCaseNodes[i].find(b) != testCaseNodes[i].end() && testCaseNodes[i][a]->validTail == b){
+                continue;
+            }
+
             if (testCaseNodes[i].find(a) != testCaseNodes[i].end()){
-                
-                if(testCaseNodes[i][a]->validTail == false) {
+
+                if(testCaseNodes[i][a]->validTail == -1) {
                     bothValid++;
-                    testCaseNodes[i][a]->validTail = true;
                 }
             } else {
                 Node* newNode = new Node;
-                newNode->validTail = true;
-                newNode->validHead = false;
+                newNode->validTail = b;
+                newNode->validHead = -1;
 
                 testCaseNodes[i][a] = newNode;
                 bothValid++;
             }
             if (testCaseNodes[i].find(b) != testCaseNodes[i].end()){
-                if(testCaseNodes[i][b]->validHead == false) {
+                if(testCaseNodes[i][b]->validHead == -1) {
                     bothValid++;
-                    testCaseNodes[i][b]->validHead = true;
                 }
             } else {
                 Node* newNode = new Node;
-                newNode->validHead = true;
-                newNode->validTail = false;
+                newNode->validHead = a;
+                newNode->validTail = -1;
 
                 testCaseNodes[i][b] = newNode;
                 bothValid++;
             }
-            std::cout << "testing " << a << " & " << b << "\n";
+            //std::cout << "testing " << a << " & " << b << "\n";
 
             if (bothValid == 2){
                 uniqueConnections++;
-                std::cout << "valid connection \n";
+                testCaseNodes[i][a]->validTail = b;
+                testCaseNodes[i][b]->validHead = a;
+
+
+                //std::cout << "valid connection \n";
                 
             }
             
-            std::cout << a << "->validHead: " << testCaseNodes[i][a]->validHead << a << " ->validTail " << testCaseNodes[i][a]->validTail << "\n";
-            std::cout << b <<"->validHead: " << testCaseNodes[i][b]->validHead << b << " ->validTail " << testCaseNodes[i][b]->validTail << "\n";
+            //std::cout << a << "->validHead: " << testCaseNodes[i][a]->validHead << a << " ->validTail " << testCaseNodes[i][a]->validTail << "\n";
+            //std::cout << b <<"->validHead: " << testCaseNodes[i][b]->validHead << b << " ->validTail " << testCaseNodes[i][b]->validTail << "\n";
 
 
 
